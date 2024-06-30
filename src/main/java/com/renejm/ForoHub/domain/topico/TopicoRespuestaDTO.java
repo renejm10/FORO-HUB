@@ -7,9 +7,11 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record TopicoRegistroDTO(
-        @NotNull String titulo,
-        @NotNull String mensaje,
-        @NotNull Usuario autor,
-        @NotNull Curso curso) {
+public record TopicoRespuestaDTO(
+        String titulo,
+        String mensaje,
+        LocalDateTime fechaCreacion,
+        Usuario autor,
+        Curso curso
+) {
 }

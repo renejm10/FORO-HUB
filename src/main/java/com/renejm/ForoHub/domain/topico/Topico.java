@@ -1,6 +1,7 @@
 package com.renejm.ForoHub.domain.topico;
 
 
+import com.renejm.ForoHub.domain.curso.Curso;
 import com.renejm.ForoHub.domain.respuestas.Respuesta;
 import com.renejm.ForoHub.domain.usuario.Usuario;
 import jakarta.persistence.*;
@@ -25,12 +26,26 @@ public class Topico {
     private String titulo;
     private String mensaje;
     private LocalDateTime fechaCreacion;
-    private LocalDateTime fechaModificacion;
     private Boolean status;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "autor")
     private Usuario autor;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Curso curso;
     @OneToMany(mappedBy = "topico", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Respuesta> respuestas;
+
+    public Topico (TopicoRegistroDTO topicoRegistroDTO) {
+        this.titulo=topicoRegistroDTO.titulo();
+        this.mensaje=topicoRegistroDTO.mensaje();
+        this.fechaCreacion=LocalDateTime.now();
+        this.status=true;
+        this.autor=topicoRegistroDTO.autor();
+        this.curso=topicoRegistroDTO.curso();
+    }
+
+    public void DesactivarTopico(){
+        this.status=false;
+    }
 
 }
