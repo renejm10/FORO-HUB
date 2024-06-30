@@ -25,24 +25,26 @@ public class Topico {
     private Long id;
     private String titulo;
     private String mensaje;
-    private LocalDateTime fechaCreacion;
+    private LocalDateTime fecha_Creacion;
     private Boolean status;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "autor")
+    @JoinColumn(name = "autor_id")
     private Usuario autor;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "curso_id")
     private Curso curso;
     @OneToMany(mappedBy = "topico", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Respuesta> respuestas;
 
-    public Topico (TopicoRegistroDTO topicoRegistroDTO) {
-        this.titulo=topicoRegistroDTO.titulo();
-        this.mensaje=topicoRegistroDTO.mensaje();
-        this.fechaCreacion=LocalDateTime.now();
+    public Topico (TopicoDTO topicoDTO, Usuario autor, Curso curso) {
+        this.titulo=topicoDTO.titulo();
+        this.mensaje=topicoDTO.mensaje();
+        this.fecha_Creacion =LocalDateTime.now();
         this.status=true;
-        this.autor=topicoRegistroDTO.autor();
-        this.curso=topicoRegistroDTO.curso();
+        this.autor= autor;
+        this.curso=curso;
     }
+
 
     public void DesactivarTopico(){
         this.status=false;

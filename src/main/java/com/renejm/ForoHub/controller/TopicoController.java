@@ -1,10 +1,8 @@
 package com.renejm.ForoHub.controller;
 
 
-import com.renejm.ForoHub.domain.topico.Topico;
-import com.renejm.ForoHub.domain.topico.TopicoRegistroDTO;
-import com.renejm.ForoHub.domain.topico.TopicoRepository;
-import com.renejm.ForoHub.domain.topico.TopicoRespuestaDTO;
+import com.renejm.ForoHub.domain.topico.*;
+import com.renejm.ForoHub.domain.usuario.Usuario;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -23,17 +21,16 @@ import java.net.URI;
 @SecurityRequirement(name = "bearer-key")
 public class TopicoController {
     @Autowired
-    private TopicoRepository repository;
+    private TopicoDatosService service;
 
     @PostMapping
     @Transactional
-    public ResponseEntity<TopicoRespuestaDTO> registrarTopico(@RequestBody @Valid TopicoRegistroDTO dtoTopico,
+    public ResponseEntity<DetalleTopicoDTO> registrarTopico(@RequestBody @Valid TopicoRegistroDTO dtoTopico,
                                                               UriComponentsBuilder uriBuilder) {
-        Topico topico = repository.save(new Topico(dtoTopico));
-        TopicoRespuestaDTO topicoRespuestaDTO = new TopicoRespuestaDTO(
-                topico.getTitulo(), topico.getMensaje(), topico.getFechaCreacion(),topico.getAutor(),topico.getCurso());
 
-        URI url = uriBuilder.path("/topico/{id}").buildAndExpand(topico.getId()).toUri();
-        return ResponseEntity.created(url).body(topicoRespuestaDTO);
+        var response = service.registrar(dtoTopico);
+
+        URI url = uriBuilder.path("/topico/{id}").buildAndExpand(response.id()).toUri();
+        return ResponseEntity.created(url).body(response);
     };
 }
