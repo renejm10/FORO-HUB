@@ -20,7 +20,7 @@ public class TopicoDatosService {
 
     public DetalleTopicoDTO registrar(TopicoRegistroDTO topicoRegistroDTO){
 
-        var usuario = usuarioRepository.findById(topicoRegistroDTO.autor()).get();
+        var usuario = usuarioRepository.findById(topicoRegistroDTO.usuario()).get();
         var curso = cursoRepository.findById(topicoRegistroDTO.curso()).get();
         var topicoDTO =new TopicoDTO(topicoRegistroDTO.titulo(),topicoRegistroDTO.mensaje());
         var topico = new Topico(topicoDTO,usuario,curso);

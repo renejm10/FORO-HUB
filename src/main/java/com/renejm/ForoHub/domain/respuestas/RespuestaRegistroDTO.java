@@ -12,7 +12,7 @@ public record RespuestaRegistroDTO(
         @NotNull String mensaje,
         @NotNull Topico topico,
         @NotNull @Future LocalDateTime fechaCreacion,
-        @NotNull Usuario autor,
+        @NotNull Usuario usuario,
         @NotNull Curso curso
 ) {
 }

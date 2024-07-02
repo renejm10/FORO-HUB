@@ -6,6 +6,6 @@ import jakarta.validation.constraints.NotNull;
 public record TopicoRegistroDTO(
         @NotNull String titulo,
         @NotNull String mensaje,
-        @NotNull Long autor,
+        @NotNull Long usuario,
         @NotNull Long curso) {
 }
