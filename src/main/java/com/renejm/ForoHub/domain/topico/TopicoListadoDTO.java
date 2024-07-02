@@ -11,15 +11,15 @@ public record TopicoListadoDTO(
         String titulo,
         String mensaje,
         LocalDateTime fechaCreacion,
-        Usuario usuario,
-        Curso curso
+        String usuario,
+        String curso
 ) {
     public TopicoListadoDTO(Topico topico) {
         this(topico.getId(),
                 topico.getTitulo(),
                 topico.getMensaje(),
                 topico.getFechaCreacion(),
-                topico.getUsuario(),
-                topico.getCurso());
+                topico.getUsuario().toString(),
+                topico.getCurso().toString());
     }
 }

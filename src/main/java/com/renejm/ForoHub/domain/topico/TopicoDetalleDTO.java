@@ -3,7 +3,7 @@ package com.renejm.ForoHub.domain.topico;
 
 import java.time.LocalDateTime;
 
-public record DetalleTopicoDTO(
+public record TopicoDetalleDTO(
         Long id,
         String titulo,
         String mensaje,
@@ -11,7 +11,7 @@ public record DetalleTopicoDTO(
         Boolean status,
         Long usuario_id,
         Long curso_id) {
-    public DetalleTopicoDTO (Topico topico){
+    public TopicoDetalleDTO(Topico topico){
         this(topico.getId(),
                 topico.getTitulo(),
                 topico.getMensaje(),

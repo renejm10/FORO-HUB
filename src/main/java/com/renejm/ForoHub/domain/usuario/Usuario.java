@@ -59,4 +59,8 @@ public class Usuario implements UserDetails {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }

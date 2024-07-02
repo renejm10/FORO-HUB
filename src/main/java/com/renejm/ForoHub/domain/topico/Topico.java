@@ -28,7 +28,7 @@ public class Topico {
     private LocalDateTime fechaCreacion;
     private Boolean status;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "autor_id")
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curso_id")
@@ -36,9 +36,9 @@ public class Topico {
     @OneToMany(mappedBy = "topico_id", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Respuesta> respuestas;
 
-    public Topico (TopicoDTO topicoDTO, Usuario usuario, Curso curso) {
-        this.titulo=topicoDTO.titulo();
-        this.mensaje=topicoDTO.mensaje();
+    public Topico (TopicoRegistroDTO topicoRegistroDTO, Usuario usuario, Curso curso) {
+        this.titulo=topicoRegistroDTO.titulo();
+        this.mensaje=topicoRegistroDTO.mensaje();
         this.fechaCreacion =LocalDateTime.now();
         this.status=true;
         this.usuario= usuario;
