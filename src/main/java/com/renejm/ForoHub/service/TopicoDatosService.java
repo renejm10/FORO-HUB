@@ -1,7 +1,7 @@
 package com.renejm.ForoHub.service;
 
 
-import com.renejm.ForoHub.controller.TopicoRespuestaDTO;
+import com.renejm.ForoHub.domain.topico.TopicoRespuestaDTO;
 import com.renejm.ForoHub.domain.curso.Curso;
 import com.renejm.ForoHub.domain.curso.CursoDTO;
 import com.renejm.ForoHub.domain.curso.CursoRepository;
