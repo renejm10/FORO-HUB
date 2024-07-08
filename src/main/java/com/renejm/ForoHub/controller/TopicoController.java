@@ -40,8 +40,8 @@ public class TopicoController {
     };
 
     @GetMapping
-    public ResponseEntity<Page<TopicoListadoDTO>> listarTopicos(@PageableDefault(size = 5,sort = "fechaCreacion",direction = Sort.Direction.ASC)  Pageable pageable) {
-        return ResponseEntity.ok(topicoRepository.findByStatusTrue(pageable).map(TopicoListadoDTO::new));
+    public ResponseEntity<Page<TopicoListadoDTO>> listarTopicos(@PageableDefault(size = 10,sort = "fechaCreacion",direction = Sort.Direction.ASC)  Pageable pageable) {
+        return ResponseEntity.ok(topicoRepository.findAll(pageable).map(TopicoListadoDTO::new));
     }
 
     @GetMapping("/{id}")

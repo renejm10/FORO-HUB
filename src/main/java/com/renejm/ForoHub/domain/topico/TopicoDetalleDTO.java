@@ -9,8 +9,8 @@ public record TopicoDetalleDTO(
         String mensaje,
         LocalDateTime fechaCreacion,
         Boolean status,
-        Long usuario_id,
-        Long curso_id) {
+        Long usuario,
+        Long curso) {
     public TopicoDetalleDTO(Topico topico){
         this(topico.getId(),
                 topico.getTitulo(),

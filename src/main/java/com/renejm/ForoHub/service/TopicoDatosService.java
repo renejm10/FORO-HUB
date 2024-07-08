@@ -6,10 +6,15 @@ import com.renejm.ForoHub.domain.curso.Curso;
 import com.renejm.ForoHub.domain.curso.CursoDTO;
 import com.renejm.ForoHub.domain.curso.CursoRepository;
 import com.renejm.ForoHub.domain.topico.*;
+import com.renejm.ForoHub.service.validaciones.TopicoValidarDTO;
+import com.renejm.ForoHub.service.validaciones.ValidadorDeTopico;
 import com.renejm.ForoHub.domain.usuario.UsuarioDTO;
 import com.renejm.ForoHub.domain.usuario.UsuarioRepository;
+import com.renejm.ForoHub.infra.errores.ValidacionIntegridad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TopicoDatosService {
@@ -21,11 +26,21 @@ public class TopicoDatosService {
     @Autowired
     private TopicoRepository topicoRepository;
 
-
-
+    @Autowired
+    private List<ValidadorDeTopico> validadores;
+    
+    private TopicoValidarDTO topicoValidarDTO;
+    
     public TopicoDetalleDTO registrarTopico(TopicoRegistroDTO topicoRegistroDTO){
-
-        var usuario = usuarioRepository.findById(topicoRegistroDTO.usuario()).get();
+        
+        topicoValidarDTO = new TopicoValidarDTO(
+                topicoRegistroDTO.titulo(),
+                topicoRegistroDTO.mensaje(),
+                topicoRegistroDTO.usuario(),
+                topicoRegistroDTO.curso());
+        validadores.forEach(v -> v.validar(topicoValidarDTO));
+        
+        var usuario = usuarioRepository.findById((topicoRegistroDTO.usuario() != null) ? topicoRegistroDTO.usuario() : null).get();
         var curso = cursoRepository.findById(topicoRegistroDTO.curso()).get();
         var topico = new Topico(topicoRegistroDTO,usuario,curso);
 
@@ -50,6 +65,18 @@ public class TopicoDatosService {
     }
 
     public TopicoDetalleDTO ActualizarTopico(Long id,TopicoActualizarDTO topicoActualizarDTO){
+
+        if (!topicoRepository.existsById(id)) {
+            throw new ValidacionIntegridad("El topico no existe");
+        }else {
+            topicoValidarDTO = new TopicoValidarDTO(
+                    topicoActualizarDTO.titulo(),
+                    topicoActualizarDTO.mensaje(),
+                    topicoActualizarDTO.usuario_id(),
+                    topicoActualizarDTO.curso_id());
+            validadores.forEach(v -> v.validar(topicoValidarDTO));
+        }
+
         Topico topico = topicoRepository.getReferenceById(id);
 
         if (topicoActualizarDTO.titulo() != null) {
@@ -58,6 +85,9 @@ public class TopicoDatosService {
         if (topicoActualizarDTO.mensaje() != null) {
             topico.setMensaje(topicoActualizarDTO.mensaje());
         }
+        if(topicoActualizarDTO.status() != null){
+            topico.setStatus(topicoActualizarDTO.status());
+        }
         if(topicoActualizarDTO.curso_id() != null){
             var responseCurso = cursoRepository.findById(topicoActualizarDTO.curso_id());
             if (responseCurso.isPresent()){
@@ -65,14 +95,18 @@ public class TopicoDatosService {
                 topico.setCurso(curso);
             }
         }
-        if(topicoActualizarDTO.status() != null){
-            topico.setStatus(topicoActualizarDTO.status());
-        }
+
         return new TopicoDetalleDTO(topico);
     }
 
 
     public void EliminarTopico(Long id) {
-        topicoRepository.deleteById(id);
+        if (!topicoRepository.existsById(id)) {
+            throw new ValidacionIntegridad("El topico no existe");
+        }else{
+            topicoRepository.deleteById(id);
+        }
+
     }
+
 }
