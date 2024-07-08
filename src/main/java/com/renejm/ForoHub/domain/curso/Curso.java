@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Optional;
+
 @Table(name = "curso")
 @Entity(name="Curso")
 @Getter
@@ -19,6 +21,9 @@ public class Curso {
     private String nombre;
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
+
+    public Curso(Optional<Curso> responseCurso) {
+    }
 
     @Override
     public String toString() {

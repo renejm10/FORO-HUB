@@ -2,13 +2,12 @@ package com.renejm.ForoHub.domain.topico;
 
 
 import com.renejm.ForoHub.domain.curso.Curso;
+import com.renejm.ForoHub.domain.curso.CursoRepository;
 import com.renejm.ForoHub.domain.respuestas.Respuesta;
 import com.renejm.ForoHub.domain.usuario.Usuario;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +15,7 @@ import java.util.List;
 @Table(name = "topico")
 @Entity(name = "Topico")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -36,6 +36,7 @@ public class Topico {
     @OneToMany(mappedBy = "topico_id", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Respuesta> respuestas;
 
+
     public Topico (TopicoRegistroDTO topicoRegistroDTO, Usuario usuario, Curso curso) {
         this.titulo=topicoRegistroDTO.titulo();
         this.mensaje=topicoRegistroDTO.mensaje();
@@ -43,11 +44,6 @@ public class Topico {
         this.status=true;
         this.usuario= usuario;
         this.curso=curso;
-    }
-
-
-    public void DesactivarTopico(){
-        this.status=false;
     }
 
 }

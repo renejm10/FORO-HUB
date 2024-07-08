@@ -1,10 +1,10 @@
 package com.renejm.ForoHub.controller;
 
 
-import com.renejm.ForoHub.domain.curso.CursoDTO;
+
 import com.renejm.ForoHub.domain.topico.*;
 
-import com.renejm.ForoHub.domain.usuario.UsuarioDTO;
+
 import com.renejm.ForoHub.service.TopicoDatosService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
@@ -48,5 +48,19 @@ public class TopicoController {
     public ResponseEntity<TopicoRespuestaDTO> obtenerTopico(@PathVariable Long id) {
         var datosTopico = service.verTopico(id);
         return ResponseEntity.ok(datosTopico);
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity actualizarTopico(@PathVariable Long id, @RequestBody @Valid TopicoActualizarDTO topicoActualizarDTO){
+        var actualizado = service.ActualizarTopico(id,topicoActualizarDTO);
+        return ResponseEntity.ok(actualizado);
+    }
+
+    @DeleteMapping("{id}")
+    @Transactional
+    public ResponseEntity eliminarTopico(@PathVariable Long id) {
+        service.EliminarTopico(id);
+        return ResponseEntity.noContent().build();
     }
 }

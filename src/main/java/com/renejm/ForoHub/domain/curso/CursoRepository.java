@@ -2,6 +2,8 @@ package com.renejm.ForoHub.domain.curso;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CursoRepository extends JpaRepository<Curso, Long> {
+import java.util.Optional;
 
+public interface CursoRepository extends JpaRepository<Curso, Long> {
+    Optional<Curso> findById(Long id);
 }

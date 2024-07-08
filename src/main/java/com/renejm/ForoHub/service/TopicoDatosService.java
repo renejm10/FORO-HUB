@@ -2,6 +2,7 @@ package com.renejm.ForoHub.service;
 
 
 import com.renejm.ForoHub.controller.TopicoRespuestaDTO;
+import com.renejm.ForoHub.domain.curso.Curso;
 import com.renejm.ForoHub.domain.curso.CursoDTO;
 import com.renejm.ForoHub.domain.curso.CursoRepository;
 import com.renejm.ForoHub.domain.topico.*;
@@ -48,6 +49,30 @@ public class TopicoDatosService {
         return datosTopico;
     }
 
+    public TopicoDetalleDTO ActualizarTopico(Long id,TopicoActualizarDTO topicoActualizarDTO){
+        Topico topico = topicoRepository.getReferenceById(id);
+
+        if (topicoActualizarDTO.titulo() != null) {
+            topico.setTitulo(topicoActualizarDTO.titulo());
+        }
+        if (topicoActualizarDTO.mensaje() != null) {
+            topico.setMensaje(topicoActualizarDTO.mensaje());
+        }
+        if(topicoActualizarDTO.curso_id() != null){
+            var responseCurso = cursoRepository.findById(topicoActualizarDTO.curso_id());
+            if (responseCurso.isPresent()){
+                Curso curso = new Curso(responseCurso);
+                topico.setCurso(curso);
+            }
+        }
+        if(topicoActualizarDTO.status() != null){
+            topico.setStatus(topicoActualizarDTO.status());
+        }
+        return new TopicoDetalleDTO(topico);
+    }
 
 
+    public void EliminarTopico(Long id) {
+        topicoRepository.deleteById(id);
+    }
 }
